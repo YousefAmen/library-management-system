@@ -3,7 +3,7 @@ from .models import *
 from .forms import *
 from django.contrib import messages
 from django.db.models import Q
-
+from members.models import Author_Profile
 
 # function index page
 def index(request):
@@ -49,11 +49,12 @@ def books(request):
   # search logic
   book = Book.objects.all()
   search = None
+  auther_profiles_search = None
   if "search_name" in request.GET:
     search_term = request.GET["search_name"]
     if search_term:
       search = book.filter(Q(name__icontains = search_term)|Q(book_info__icontains=search_term))
-    
+      auther_profiles_search = Author_Profile.objects.filter(writer_name__icontains = search_term)
   # aad category logic in the books page
   add_category = Add_Category(request.POST)
   if request.method == 'POST':
@@ -67,7 +68,8 @@ def books(request):
   "books":search,
   "all_books":books,
   'category':Category.objects.all(),
-  "add_category":Add_Category()
+  "add_category":Add_Category(),
+  'auther_profiles_search':auther_profiles_search,
   }
   return render(request,'pages/books.html',context)
 
@@ -114,7 +116,5 @@ def contact_us(request):
     message = Contactus_forms(request.POST)
     if message.is_valid():
       save_message=message.save()
-  context = {
-    'contact_form':Contactus_forms
-    }
+  context = {'contact_form':Contactus_forms}
   return render(request,'pages/contact_us.html',context)

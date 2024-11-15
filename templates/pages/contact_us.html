@@ -1,79 +1,78 @@
-
-{%extends 'base.html'%}
-{%block content%}
+{% extends 'base.html' %}
+{% block content %}
 
 <style>
-      
-.contact-form {
-  width: 500px; /* Adjust width as needed */
-  margin: 50px auto; /* Center the form horizontally */
-  padding: 20px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  outline: none;
-}
+  .contact-form-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 
-.contact-form label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
+  .contact-form-container h3 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+  }
 
-.contact-form input{
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  font-size: 16px;
-}
-.contact-form textarea{
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  font-size: 16px;
-  padding: 10px;
-  padding-bottom: 100px;
-  max-height: 150px ;
-}
+  .contact-form-container .form-control {
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+  }
 
+  .contact-form-container .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+  }
 
+  .contact-form-container .btn {
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
 
-
-.contact-form input:hover{
-  border-color: #aecef0;
-}
-.contact-form textarea:hover{
-  border-color: #aecef0;
-}
-
-.contact-form button {
-  background-color: #007bff; /* Adjust button color */
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.contact-form button:hover{
-  background-color: #0069d9; 
-}
-
-
+  .alert {
+    max-width: 600px;
+    margin: 20px auto;
+  }
 </style>
-    <!-- form start -->
-    <form class="contact-form" method="POST" enctype="multipart/form-data">
-      
-      
 
-        {% csrf_token%}
-        {{contact_form.custmoer_name}}
-        {{contact_form.custmoer_email}}
-        {{contact_form.message}}
-        <button type="submit">Send Message</button>
+<div class="container">
+  <!-- Flash Messages -->
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
 
+  <!-- Contact Form -->
+  <div class="contact-form-container">
+    <h3>Contact Us</h3>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="mb-3">
+        {{ contact_form.custmoer_name}}
+      </div>
+      <div class="mb-3">
+        {{ contact_form.custmoer_email}}
+      </div>
+      <div class="mb-3">
+        {{ contact_form.message}}
+      </div>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </div>
     </form>
-  
+  </div>
+</div>
 
-
-{% endblock content%}
+{% endblock content %}

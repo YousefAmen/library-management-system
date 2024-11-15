@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
   category_name  = models.CharField(max_length=100, verbose_name='',default=None,unique=True,)
-  
+  class Meta :
+    verbose_name_plural = 'Categories' 
   def __str__(self):
     return self.category_name
 
@@ -72,7 +73,8 @@ class Contact_us(models.Model):
   custmoer_email         = models.EmailField(max_length=50,verbose_name='',default=None)
   message                = models.TextField(max_length=500,verbose_name='',default=None)
 
-
+  class Meta:
+    verbose_name_plural = 'Contact Us'
   def __str__(self):
     return self.custmoer_name
 

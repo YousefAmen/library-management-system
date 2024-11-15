@@ -5,10 +5,11 @@
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        {% if request.path == '/' or request.path == '/books/' %}
-        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+        {% if request.path == '/' or request.path == '/books/' or '/update/' in request.path %}
+          <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
         {% endif %}
       </li>
+      
       {% if user.is_authenticated %}
       <li>
         <a href="{% url 'profile' %}" class="nav-link">Your Profile</a>

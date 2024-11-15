@@ -98,9 +98,9 @@ class Contactus_forms(forms.ModelForm):
     fields = "__all__"
 
     widgets={
-    "custmoer_name":forms.TextInput(attrs={'placeholder':'Write Your Name','class':'contact-form'}),
-    "custmoer_email":forms.EmailInput(attrs={'placeholder':'Write Your Email','class':'contact-form'}),
-    "message":forms.Textarea(attrs={'placeholder':'Write Your Message','class':'contact-form'}),
+    "custmoer_name":forms.TextInput(attrs={'placeholder':'Write Your Name','class':'form-control'}),
+    "custmoer_email":forms.EmailInput(attrs={'placeholder':'Write Your Email','class':'form-control'}),
+    "message":forms.Textarea(attrs={'placeholder':'Write Your Message','class':'form-control'}),
     
     }
 

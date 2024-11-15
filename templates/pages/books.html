@@ -14,7 +14,6 @@
               </div>
 
             </div>
-        </section>
         
         <!-- Main content -->
         <section class="content">                  
@@ -179,24 +178,6 @@
                           <i class="fas fa-book"></i> تعديل
                         </a>
                         {% endif %}
-
-                        {% if user.is_authenticated  %}
-                          {% if book.likes.all %}
-                            <span>
-                              <a  href="{% url 'like_or_dislike' book.id %}" class="like-button" >
-                                <i style="color: red;" class="fa-solid fa-heart"></i>
-                              </a>
-                            </span>
-                          {%else%}
-                            <span>
-                                <a href="{% url 'like_or_dislike' book.id %}" class="like-button">
-                                  <i style="color:gray; " class="fa-regular fa-heart"></i>
-                                </a>
-                            </span>
-                          {%endif%}
-                          <i style="color: red; " class="fa-solid fa-heart"></i>
-                          <span>{{book.number_of_likes}}</span>
-                      {% endif %} 
                       </div>
                     </div>
                     </div>
@@ -214,9 +195,8 @@
             <!-- /.card -->
           </section>
           <!-- /.content -->
-        </div>
       <!-- /.content-wrapper -->
-    
+
   </div>
   <!-- /.content-wrapper -->
 </div>

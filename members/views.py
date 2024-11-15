@@ -10,25 +10,29 @@ from .models import *
 
 # registration user function
 def registration_page(request):
-  try:
-    form = SignUpForm()
-    if request.method  == "POST":
+  form = SignUpForm()
+  if request.method  == "POST":
+    try:
       form = SignUpForm(request.POST)
       if form.is_valid():
         form.save()
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password1')
         user = authenticate(username=username,password =password)
-        login(request,user)
-        return redirect('/')
-        messages.success(request,f"Account Is Created Welcome {username}")
+        if user is not None:
+          login(request,user)
+          return redirect('/')
+          messages.success(request,f"Account Is Created Welcome {username}")
+        else:
+          messages.error(request, "Authentication failed. Please log in manually.")
+          return redirect('login')
       else:
         messages.info(request,"Invalid Informations,Please Chack Your Details...")
-        return redirect('registration')
-    else:
-      return render(request, 'registration/register.html',{'form':form})
-  except :
-    messages.info(request,"Error!!!")
+    except Exception as error:
+      messages.info(request,"Please Try Agine.")
+      return redirect('/')
+  context = {'form':form}
+  return render(request, 'registration/register.html',context)
 
 
 # login user function
