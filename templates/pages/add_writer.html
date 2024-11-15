@@ -1,0 +1,57 @@
+{% extends 'base.html'%}
+{% block content%}
+<style>
+.add_forms{
+  width: 400px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  margin: 50px auto;
+}
+.add_forms .main-text{
+  text-align: center;
+  font-weight: 500;
+  padding-top: 15px;
+  color: #444;
+
+}
+.message {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.message-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+
+</style>
+<div class="add_forms">
+  <h2 class="main-text">Add Writer Profile</h2>
+  {% if messages %}
+  <div class="messages">
+      {% for message in messages %}
+          <div class="message message-info">
+              {{ message }}
+          </div>
+      {% endfor %}
+  </div>
+{% endif %}
+<div class="add-card">
+  <form method="POST" enctype="multipart/form-data"> 
+    <div class="card-body"> 
+      {%csrf_token%}
+      {{add_writer_forms.as_p}}
+      
+      
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer">
+      <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+  </form>
+</div>
+</div>
+<p>wefedfsdfsf</p>
+{% endblock content%}

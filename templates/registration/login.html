@@ -1,0 +1,164 @@
+{% extends 'base.html'%}
+{% block content %}
+<style>
+{% comment %} body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #f5f5f5; /* Light gray background */
+} {% endcomment %}
+
+.login-container {
+  width: 400px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  padding: 30px;
+  margin: 50px auto; /* Center the container horizontally and vertically */
+  position: relative; /* Enable positioning for content */
+  z-index: 1; /* Ensure card is above other content */
+}
+
+/* Login Card Title */
+.login-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Login Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Login Label */
+
+
+/* Login Input */
+.login-form input{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+  outline: none;
+}
+.login-form input:hover{
+  border-color:  #aecef0;
+}
+/* Login Button */
+.login-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.login-button:hover {
+  background-color: #0069d9;
+}
+
+
+
+/* Login Forgot Password Link */
+.login-forgot-password {
+  text-align: right;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+}
+
+/* Make Account Section */
+.make-account {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.make-account h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.make-account p {
+  font-size: 14px;
+  color: #666;
+}
+
+.make-account-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.make-account-button:hover {
+  background-color: #0069d9;
+}
+.message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+.message-info {
+            color: #31708f;
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+}
+
+</style>
+<body> 
+  <!-- <div class="form_group">
+    <form action="" method='POST'>
+      {%csrf_token%}
+      {{form.as_p}}
+      <input class="btn login_btn" type="submit" value="Register Account">
+    </form>
+  </div> -->
+  <main>
+    
+    <div class="login-container">
+      <div class="login-card">
+        <h2 class="login-title">Login</h2>
+        <form action="{% url 'login' %}" method="POST" class="login-form">
+          {% csrf_token %}
+            <input type="text" name="username" placeholder="Username..." class="form-control">
+          	<input type="password" name="password" placeholder="Password..." class="form-control" >
+          {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message message-info">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+          <button type="submit" class="login-button">Login</button>
+          <a href="#" class="login-forgot-password">Forgot Password?</a>
+        </form>
+
+        <div class="make-account">
+          <h3>Create a New Account</h3>
+          <p>Don't have an account yet? Sign up here!</p>
+          <a href="{% url 'registration' %}" class="make-account-button">Sign Up</a>
+        </div>
+      </div>
+    </div>
+    
+  </main>
+</body>
+{% endblock content %}

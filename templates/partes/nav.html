@@ -1,0 +1,58 @@
+  <!-- في المكان ده هحط الناف بار -->
+
+  <!-- Navbar -->
+  <nav  class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        {% if request.path == '/' or request.path == '/books/' %}
+        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+        {% endif %}
+      </li>
+      {% if user.is_authenticated %}
+      <li>
+        <a href="{% url 'profile' %}" class="nav-link">Your Profile</a>
+      </li>
+      {%endif%}
+      {% if not user.is_authenticated %}
+      <li>
+        <a style="background: linear-gradient(45deg, #6b9fff, #00ffbf); border-radius:8px;color:white " href="{% url 'registration' %}" class="nav-link">Sign Up</a>
+      </li>
+      {% endif %}
+
+      {% if user.is_authenticated %}
+      <li>
+        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+      </li>
+
+      {% else %}
+      <li>
+        <a href="{% url 'login' %}" class="nav-link">Login</a>
+      </li>
+      {%endif%}
+      <li>
+        <a href="{% url 'contact_us' %}" class="nav-link">Contact Us</a>
+      </li>
+      <li>
+        <a href="{% url 'books' %}" class="nav-link">Books</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{%url 'index'%}" class="nav-link">Home</a>
+      </li>
+
+    </ul>
+
+    <!-- SEARCH FORM -->
+    <form method="GET" class="form-inline ml-3" action = "{%url 'books'%}">
+      <div class="input-group input-group-sm">
+        <input class="form-control form-control-navbar" name="search_name" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+          <button class="btn btn-navbar" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </nav>
+  <!-- /.navbar -->
+

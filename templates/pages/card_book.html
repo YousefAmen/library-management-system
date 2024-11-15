@@ -1,0 +1,321 @@
+{%extends 'base.html'%}
+{% load static %}
+{% block content%}
+<style>
+  /* Page container styling */
+  .container {
+    display: flex;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: calc(50vh - 100px); /* Ensure enough space for the page with Footer */
+  }
+  
+  /* Author image section styling */
+  .author-image {
+    width: 200px;
+    height: 200px;
+    margin-right: 40px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+  
+  .author-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Author information section styling */
+  .author-info {
+    flex: 1;
+  }
+  
+  .author-info h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #2196F3;
+    padding-right:30px ;
+  }
+  
+  .author-info p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    padding-right: 30px;
+  }
+  
+  .cards-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    
+    padding-right: 30px;
+  }
+  
+  /* Cards for awards and achievements */
+  .card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin:0 10px;
+  }
+  
+  .card h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #2196F3;
+  }
+  
+  .card p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  /* Social media icons styling */
+  .social-icons {
+    margin-top: 20px;
+  }
+  
+  .social-icons a {
+    margin: 0 10px;
+    color: #2196F3;
+    font-size: 24px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .social-icons a:hover {
+    color: #0056b3;
+  }
+  /* book-details section  */
+  .book-information-section {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .book-information-section .info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+  .book-information-section .info .details-title{
+    text-align: center;
+    color: #444;
+    font-size: 18px;
+    text-transform: capitalize;
+  }
+
+  .book-information-section .info ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px;
+  }
+  
+  .book-information-section .info ul li {
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+  }
+  
+  .book-information-section .info ul li:hover {
+    background-color: #e0f7fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .book-information-section .info ul li:first-child {
+    margin-top: 0;
+  }
+  
+  .book-information-section .info ul li:last-child {
+    margin-bottom: 0;
+  }
+  /* Books section styling */
+  .books {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-top: 40px;
+  }
+  .text-book{
+    text-align:center;
+    color:#444;
+    padding-top: 20px;
+  } 
+  
+  .book-card {
+    width: 200px; 
+    max-height: 450px; 
+    background-color: #fff; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    border-radius: 10px; 
+    margin: 20px; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    text-align: center;
+    border: 1px solid #F0F0F0;
+  }
+  
+  .book-card img {
+    width: 100%; 
+    height: 200px; 
+    object-fit: cover; 
+    border-radius: 10px 10px 0 0; 
+  }
+  
+  .book-card h3 {
+    font-size: 20px;
+    margin-bottom: 4px;
+    color: #444;
+  }
+  
+  .book-card .text-status {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+  
+  .book-card .status {
+    text-transform: capitalize;
+    font-size: 18px;
+  }
+  
+  .book-card .date-publish-text {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+  
+  .book-card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    border-color: #2196F3;
+  }
+  
+  .default-info {
+    color: rgb(207, 73, 73);
+    text-transform: capitalize;
+    font-weight: 600;
+    font-size: 25px;
+  }
+  
+  </style>
+  <body>
+
+    <div class="container">
+      <div class="author-image">
+       {% if book_card.image %}
+       <img src="{{book_card.image.url}}" alt="Default Profile Image">
+      {%else%}
+       <img src="{% static 'dist/img/default_image_book.jpg' %}" alt="Default Profile Image">
+      {%endif%}
+      </div>
+      <div class="author-info">
+        <h1>{{book_card.name}}</h1> 
+        {% if book_card.book_info %}
+          <p>{{book_card.book_info}}</p>
+        {%else%}
+          <p class="default-info">... No information was found about this Book. This is a good article. Read it</p>
+          <p>
+              Reading is one of the most essential activities a person can engage in, offering a unique opportunity for learning, thinking, and imagining. It is a window that opens up new worlds and countless experiences, allowing us to benefit from the wisdom and knowledge accumulated by humanity over the ages. Reading is a fundamental pillar of education, culture, and personal development, and it has a significant impact on both the individual and society as a whole.
+              Enhancing Knowledge and Culture
+              Reading is an effective way to acquire knowledge and gain a better understanding of the world around us. Through books, we can learn new facts and explore diverse subjects such as science, history, literature, and philosophy. Books represent the experiences and wisdom of previous generations, contributing to the development of our culture and understanding of life. By reading, we gain a deeper insight into global events and historical developments, helping us form our own opinions and make informed decisions.
+          </p>
+      {%endif%}
+      </div>
+    </div>
+    <div class="book-information-section">
+      <div class="info">
+        <ul>
+          <p class="details-title">pages</p>
+          {% if book_card.book_date %}
+          <li>{{book_card.pages}}</li>
+          {%else%}
+          <li>! Unknown</li>
+          {%endif%}
+        </ul>
+        <ul>
+          <p class="details-title">date</p>
+          {% if book_card.book_date %}
+          <li>{{book_card.book_date|date:'d-m-Y' }}</li>
+          {%else%}
+          <li>! Unknown</li>
+          {%endif%}
+        </ul>
+        <ul>
+          <p class="details-title">category</p>
+          {% if book_card.category %}
+          <li>{{book_card.category }}</li>
+          {%else%}
+          <li>! Unknown</li>
+          {%endif%}
+        </ul>
+        <ul>
+          <p class="details-title">author name</p>
+          {% if book_card.category %}
+          <li>{{book_card.author.writer_name }}</li>
+          {%else%}
+          <li>! Unknown</li>
+            {% endif %} 
+            
+        </ul>
+      </div>
+    </div>
+    <h2 class="text-book">Books</h2>
+    <div class="books">
+      {% if books.exists %}
+        {% for book in books %}
+        
+          <div class="book-card">
+            {% if book.image %}
+              <img src="{{ book.image.url }}" alt="Book Image">
+            {% else %}
+              <img src="{% static 'dist/img/default_image_book.jpg' %}" alt="Default Book Image">
+            {% endif %}
+            <h3>{{ book.name }}</h3>
+            <p class='text-status'>Status</p>
+            <p class="status">{{ book.status }}</p>
+            <p class="date-publish-text">Date Of Publish</p>
+            <p class="date-publish">{{ book.book_date|date:'d-m-Y' }}</p>
+          </div>
+        {% endfor %}
+      {%else%}
+      {% for book in all_books|slice:'5' %}
+          <div class="book-card">
+            {% if book.image %}
+              <img src="{{ book.image.url }}" alt="Book Image">
+            {% else %}
+              <img src="{% static 'dist/img/default_image_book.jpg' %}" alt="Default Book Image">
+            {% endif %}
+            <h3>{{ book.name }}</h3>
+            <p class='text-status'>Status</p>
+            <p class="status">{{ book.status }}</p>
+            <p class="date-publish-text">Date Of Publish</p>
+            <p class="date-publish">{{ book.book_date|date:'d-m-Y' }}</p>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  
+  </body>
+  </html>
+  
+{% endblock content%}

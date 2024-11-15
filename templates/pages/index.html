@@ -1,0 +1,388 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block content%}
+{%include 'partes/sidebar.html'%}
+  <style>
+.message {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+        }
+.message-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+        }
+.message-error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+        }
+.message-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+        }
+.message-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+        }
+.add-button-link {  
+  
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+}
+
+.add-button-link .add-link{
+    color: #fff;
+    border-color: #007bff;
+    box-shadow: none;
+  }
+.add-button-link:hover {
+    background-color: #007bff;
+    }
+.like-button i {
+      color: grey;
+      cursor: pointer;
+    }
+  
+.like-button.liked i {
+      color: red;
+    }
+
+.name-header-book{
+  
+  font-size: 25px;
+  font-weight: 300;
+  margin-bottom: 0;
+  margin-top: 0;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  text-align: center;"
+}
+.text-username-book-card{
+  text-align: center;
+  text-transform: capitalize;
+  font-weight: 200;
+  font-size: 20px;
+  color:red;
+  padding:3px;
+  margin: 4px;
+  color:#444;
+}
+.author-name-header {
+  text-align: center;
+  font-weight: 400;
+  font-size: 20px;
+  color:#222;
+  padding: 5px;
+  margin: 5px;
+}
+  </style>
+    <!-- في المكان ده هحط المحتوى -->
+  <div style="direction: rtl;" class="wrapper">
+    
+    <!-- Content Wrapper. Contains page content -->
+    <div   class="content-wrapper">
+      <!-- Content Header (Page header) -->
+  
+      <!--الاحصائيات-->
+      <div class="content">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message message-success ">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-header border-0">
+                  <div class="d-flex justify-content-between">
+                    <h3 class="card-title">Total Numbers Of Books</h3>                    
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="d-flex">
+                    <p class="d-flex flex-column">
+                      <span class="text-bold text-lg">{{count}}</span>
+                      <span>Total Numbers Of Books</span>
+                    </p>  
+                  </div>
+                  
+                  <!-- /.d-flex -->
+
+                  <div class="position-relative mb-4">
+                    <canvas id="visitors-chart" height="200"></canvas>
+                  </div>  
+                </div>
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col-md-6 -->
+            {% for book in books %}
+            {% if book.price != None%}
+            {% if book.status == 'sold' or book.status == 'Rented'%}
+              <p class="total_price">{{book.price}}</p>
+            {% endif %}
+            {% endif %}
+            {% if book.total_price != None and book.status == 'Rented'%}
+              <p class="total_price">{{book.total_price}}</p>
+              
+            {% endif %}
+            {% endfor %}
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-header border-0">
+                  <div class="d-flex justify-content-between">
+                    <h3 class="card-title">Profits</h3>   
+                  </div>
+                </div>    
+                <div class="card-body">
+                  
+                  <div class="d-flex">
+                    <p class="d-flex flex-column">
+                      <span id="totalsalarys" class="text-bold text-lg">${{total}}</span><br></p>
+                  </div>
+                  
+                  <!-- /.d-flex -->
+                  {% for book in  books %}
+                  {% if book.price != None %}
+                  {% if book.status == 'sold'%}
+                    <p class = "total_sold">{{book.price}}</p>
+                  {% endif%}
+                  {% endif %}
+                  {% if book.total_price != None and book.status == 'Rented'%}
+                    <p class = "total_rental">{{book.total_price}}</p> 
+                  {% endif %}
+                {% endfor %}
+                <p class = "total_profit_sales"></p>
+                <p class = "total_profit_rental"></p> 
+                  <div class="position-relative mb-4">
+                    <canvas id="sales-chart" height="160"></canvas>
+                  </div>
+                  <div class="d-flex flex-row justify-content-end">
+                    <span class="mr-2">
+                      <i class="fas fa-square text-primary"></i> Profits From Book Sales
+                      <p id="soldtotals"></p>
+                    </span>
+                    <span>
+                      <i class="fas fa-square text-gray"></i> Profits From Rentel Books
+                      <p id="rentedtotals"></p>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+            <!-- /.col-md-6 -->
+          </div>
+          <!-- /.row -->
+  
+          <!-- form add books -->
+          {% if user.is_superuser %}
+          <div class="row m-1 mb-3">   
+            <a href="#bookform" class="btn btn-primary" data-toggle="collapse">+ Add Book</a>
+          </div>
+        {% endif %}
+          <div id="bookform" class="card card-primary collapse">
+            <div class="card-header">
+              <h3 class="card-title">Add Book</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form method="POST" enctype="multipart/form-data"> 
+              <div id="bookform" class="card card-primary collapse">
+                <div class="card-body"> 
+                  <div class="row m-1 mb-3">   
+                    <a href="{% url 'add_writer' %}" class="btn btn-primary">+ Add Writer</a>
+                  </div>
+                {%csrf_token%}
+                {{book_form}}
+                
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Add</button>
+              </div>
+            </form>
+          </div>
+                <!-- /.card -->
+              </div>
+          <!-- end form add books -->
+          <!-- تصنيفات-->
+          <div class="row justify-content-center mb-3">
+            <div class="col-7 center ">
+              <ul class="nav">
+                {%for cat in category|slice:'4'%}
+                <li class="nav-item cat{{cat.id}}">
+                  <a id="" class="nav-link bg-primary" href="#">{{cat.category_name}}</a>
+                </li>
+                
+                {%endfor%}
+              </ul>
+            </div>
+          </div>
+          <!-- books -->
+          <div class="row">
+        {%for book in books%}
+          <!-- الكتب -->
+          <div id="" class="col-md-4 bookhide book{{book.category.id}} book{{book.status}}">
+            <!-- Widget: user widget style 1 -->
+            <div id="" class="card card-widget widget-user">
+                  <!-- Add the bg color to the header using any of the bg-* classes -->
+                <!-- قائمة منسدلة -->
+                {% if user.is_superuser %}
+                <div style="position: absolute;" class="btn-group">   
+                  <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{%url 'update' book.id %}">Modify</a>
+                    <a class="dropdown-item" href="{%url 'delete' book.id%}">Delete</a>
+                    <!-- Button trigger modal -->
+                  </div>
+                </div>
+                {% endif %}
+                {% if book.image%}
+                <div style="background: url({{book.image.url}})" class="widget-user-header bg-info">
+                {% else%}
+                <div style="background:url('static/dist/img/default_image_book.jpg'); background-size:cover;" class="widget-user-header bg-info">
+                {% endif%}
+                </div>
+                <div class="widget-user-image">
+                  {% if book.author.writer_image %}
+                  <img style="width:100px; height: 100px;" class="img-circle elevation-2" 
+                  src="{{ book.author.writer_image.url}}" alt="User Avatar">
+                
+                  {% else %}
+                  <img style="width:100px; height: 100px;" class="img-circle elevation-2" 
+                  src="{% static 'dist/img/default-image-writer.png' %}" alt="User Avatar">
+                {% endif %} 
+                </div>
+                <div class="card-footer">
+                    <h3 class="name-header-book"><a href="{%url 'book_card' book.name%}">{{book.name}}</a></h3>  
+                  <div class="row">
+                    <div class="col-sm-4 border-right">
+                      <div class="description-block">
+                        <span class="description-text">Pages</span>
+                        {% if book.pages %}
+                        <h5 class="description-header">{{book.pages}}</h5>
+                        {% else %}
+                        <h5 class="description-header">Unknown</h5>
+                        {% endif %}
+                      </div>
+                    </div>
+
+
+                    <div class="col-sm-4 border-right">
+                      <div class="description-block">
+                        {% if book.price%}
+                          <span class="description-text">Price</span>
+                          <h5 class="description-header">{{book.price}}$</h5>
+                        {% elif book.retal_price%}
+                          <span class="description-text">Price in 1 Day</span>
+                          <h5 class="description-header">{{book.retal_price}}$</h5>
+                          {% else%}
+                          <span class="description-text">Price</span>
+                          <h5 class="description-header">0.00</h5>
+                        {% endif%}
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="description-block">
+                        {% if book.price is None and book.retal_price is None or book.status == None%}
+                        <span class="description-text">Status</span>
+                        <h5 class="description-header text-secondary">Not Available</h5>
+                        {% elif book.status == 'Available' %}
+                        <span class="description-text">Status</span>
+                        <h5 style="text-transform: capitalize;" class="description-header text-success">{{book.status}}</h5>
+                        {% elif book.status == 'sold'%}
+                        <span class="description-text">Status</span>
+                        <h5 style="text-transform: capitalize;" class="description-header text-danger">{{book.status}}</h5>
+                        {% elif book.status == 'Rented'%}
+                        <span class="description-text">Status</span>
+                        <h5 style="text-transform: capitalize;" class="description-header text-info">{{book.status}}</h5>
+                        {% endif%}
+                      </div>
+                    </div>                    
+                  </div>
+                  <div class="user-name-author">
+                    <!-- start css styling -->
+                    <h6 class="text-username-book-card">Author Name</h6>
+                    
+                    <h5 class="author-name-header"><a href="{% url 'writer_page' book.author.id %}">{{book.author.writer_name}}</a></h5>
+                    
+                  </div>
+                  {% if user.is_authenticated %}
+                    {% if book.likes.all %}
+                      <span>
+                        <a  href="{% url 'like_or_dislike' book.id %}" class="like-button" data-book-id="{{ book.id }}">
+                          <i style="color: red;" class="fa-solid fa-heart"></i>
+                        </a>
+                      </span>
+                    {%else%}
+                      <span>
+                        <a href="{% url 'like_or_dislike' book.id %}" class="like-button" data-book-id="{{ book.id }}">
+                          <i class="fa-regular fa-heart"></i>
+                        </a>
+                      </span>
+                    {%endif%}
+                      <span>{{book.number_of_likes}}</span>
+                  {% else %}
+                      {% if book.number_of_likes >= 1  %}
+                        <i style="color: red;" class="fa-solid fa-heart"></i>
+                        <span>{{book.number_of_likes}}</span>
+                      {% endif %}
+                  {%endif%}
+                </div>
+              </div>
+              
+            </div>
+            {% endfor%}
+          <!-- نهاية الكتاب --> 
+
+              <div class="row">
+                <div class="col text-center">
+                  <!--اضف صورة هنا في حالة عدم وجود كتب-->
+                </div>
+              </div>
+          </div>    
+      </div>
+    </div>
+        <!-- /.container-fluid -->
+  </div>
+  <!-- <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.like-button').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          var heartIcon = this.querySelector('i');
+          heartIcon.classList.toggle('fas');
+          heartIcon.classList.toggle('far');
+          this.classList.toggle('liked');
+        });
+      });
+    });
+  </script> -->
+      <!-- /.content -->
+      <!-- /.content-wrapper -->
+{% endblock content%}

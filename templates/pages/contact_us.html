@@ -1,0 +1,79 @@
+
+{%extends 'base.html'%}
+{%block content%}
+
+<style>
+      
+.contact-form {
+  width: 500px; /* Adjust width as needed */
+  margin: 50px auto; /* Center the form horizontally */
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.contact-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.contact-form input{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+}
+.contact-form textarea{
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+  padding: 10px;
+  padding-bottom: 100px;
+  max-height: 150px ;
+}
+
+
+
+
+.contact-form input:hover{
+  border-color: #aecef0;
+}
+.contact-form textarea:hover{
+  border-color: #aecef0;
+}
+
+.contact-form button {
+  background-color: #007bff; /* Adjust button color */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.contact-form button:hover{
+  background-color: #0069d9; 
+}
+
+
+</style>
+    <!-- form start -->
+    <form class="contact-form" method="POST" enctype="multipart/form-data">
+      
+      
+
+        {% csrf_token%}
+        {{contact_form.custmoer_name}}
+        {{contact_form.custmoer_email}}
+        {{contact_form.message}}
+        <button type="submit">Send Message</button>
+
+    </form>
+  
+
+
+{% endblock content%}

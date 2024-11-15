@@ -1,0 +1,224 @@
+
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+{%include 'partes/sidebar.html'%}
+<div style="direction: rtl;" class="wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div   class="content-wrapper p-5">
+    <!-- Content Header (Page header) -->
+
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1>الكتب</h1>
+              </div>
+
+            </div>
+        </section>
+        
+        <!-- Main content -->
+        <section class="content">                  
+          <!-- Default box -->
+          {% if books%}
+          <div class="card card-solid ">
+            <div class="card-body pb-0">
+              <div class="row d-flex align-items-stretch">
+                {% for book in books%}
+                <div class="col-12 col-sm-6 col-md-6   bookhide book{{book.category.id}} book{{book.status}}">
+                  <div id="" class="card bg-light">
+                    <div  class="card-header text-muted border-bottom-0">
+                      {% if book.category%}
+                      <p>{{book.category}}</p>
+                      {% else%}
+                      <span>Category</span>
+                      {% endif%}
+                    </div>  
+                    <div style="overflow: hidden;" class="card-body pt-0">
+                      <div class="row">
+
+                        <div class="col-7">
+                          <h2 class="lead"><b>{{book.name}}</b></h2>
+                          <ul style="margin-left:1.5em" class="fa-ul text-muted">
+                            {% if book.price%}
+
+                              {% if book.status == 'sold'%}
+                                <li style='color:#dc3545; font-weight:400;' class="small"><span class="fa-li"></span>{{book.status}}</li>
+                              {% elif book.status == 'Rented'%}
+                                <li style='color:#ffc107;font-weight:400;' class="small"><span class="fa-li"></span>{{book.status}}</li>
+                              {% elif book.status == 'Available'%}
+                                <li style='color:#28a745;font-weight:400;' class="small"><span class="fa-li"></span>{{book.status}}</li>
+                              {% else%}
+                              <li style="color:#00008B;font-weight:400" class="small"><span class="fa-li"></span>Not Available</li>
+                              {% endif%}
+                            {% comment %}takes anthor way if rantal price is ture {% endcomment %}
+                            {% elif book.retal_price%}
+                              <li style="color:blue;font-weight:400" class="small"><span class="fa-li"></span>Rental Price in One day</li>
+                            {% else%}
+                            <li style="color:#00008B;font-weight:400" class="small"><span class="fa-li"></span>Not Available</li>
+                            {% endif%}
+                              <span style="font-weight: 400;margin:5px 0">Price</span>
+                              <li style="font-weight:bold;" class="small"><span class="fa-li"></span>{{book.price}}ج.م</li>
+
+                          </ul>
+                        </div>
+                        <div class="col-5 text-center">
+                          {% if book.image%}
+                          <img style="height: 120px; width: 120px; border-radius:5px;"  src="{{book.image.url}}" alt="" >
+                          {% else%}
+                          <img style="height: 120px; width: 120px; border-radius:5px;"  src="{%static 'dist/img/default_image_book.jpg'%}" alt="">
+                          {% endif%}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-footer">
+                      <div class="text-right">
+                        {% if user.is_admin %}
+                        <a href="{%url 'delete' book.id%}" class="btn btn-sm bg-danger">
+                          <i class="fas fa-trash"></i>
+                        </a>  
+                        {% endif %}
+                        {% if user.is_admin %}
+                        <a href="{%url 'update' book.id %}" class="btn btn-sm btn-primary">
+                          <i class="fas fa-book"></i> تعديل
+                        </a>
+                        {% endif %}
+
+                        {% if user.is_authenticated  %}
+                          {% if book.likes.all %}
+                            <span>
+                              <a  href="{% url 'like_or_dislike' book.id %}" class="like-button" >
+                                <i style="color: red;" class="fa-solid fa-heart"></i>
+                              </a>
+                            </span>
+                          {%else%}
+                            <span>
+                                <a href="{% url 'like_or_dislike' book.id %}" class="like-button">
+                                  <i style="color:gray;" class="fa-regular fa-heart"></i>
+                                </a>
+                            </span>
+                          {%endif%}
+                            <span>{{book.number_of_likes}}</span>
+                        {% else %}
+                            {% if book.number_of_likes >= 1  %}
+                              <i style="color: red;" class="fa-solid fa-heart"></i>
+                              <span>{{book.number_of_likes}}</span>
+                            {%endif%}
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                {%endfor%}
+              </div>
+            </div>
+
+          </div>
+          {% else %}
+          <div class="card card-solid ">
+            <div class="card-body pb-0">
+              <div class="row d-flex align-items-stretch">
+                {% for book in all_books%}
+                <!-- بداية الكتاب -->
+                <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch ">
+                  <div id="" class="card bg-light">
+                    <div  class="card-header text-muted border-bottom-0">
+                      {% if book.category%}
+                      <p>{{book.category}}</p>
+                      {% else%}
+                      <span>Category</span>
+                      {% endif%}
+                    </div>  
+                    <div style="overflow: hidden;" class="card-body pt-0">
+                      <div class="row">
+
+                        <div class="col-7">
+                          <h2 class="lead"><b>{{book.name}}</b></h2>
+                          <ul style="margin-left:1.5em" class="fa-ul text-muted">
+                            {% if book.price%}
+
+                              {% if book.status == 'sold'%}
+                                <li style='text-transform: capitalize; color:#dc3545; font-weight:400;' class="small"><span class="fa-li"></span>{{book.status}}</li>
+                              {% elif book.status == 'Rented'%}
+                                <li style='text-transform: capitalize; color:#ffc107;font-weight:400;' class="small"><span class="fa-li"></span>{{book.status}}</li>
+                              {% elif book.status == 'Available'%}
+                                <li style='text-transform: capitalize; color:#28a745;font-weight:400;' class="small"><span class="fa-li"></span>{{book.status}}</li>
+                              {% else%}
+                              <li style='text-transform: capitalize; color:#00008B;font-weight:400;' class="small"><span class="fa-li"></span>Not Available</li>
+                              {% endif%}
+                            {% elif book.retal_price%}
+                              <li style="color:blue;font-weight:400" class="small"><span class="fa-li"></span>Rental Price in One day</li>
+                            {% else%}
+                            <li style="color:#00008B;font-weight:400" class="small"><span class="fa-li"></span>Not Available</li>
+                            {% endif%}
+                              <span style="font-weight: 400;margin:5px 0">Price</span>
+                              <li style="font-weight:bold;" class="small"><span class="fa-li"></span>{{book.price}}ج.م</li>
+
+                          </ul>
+                        </div>
+                        <div class="col-5 text-center">
+                          {% if book.image%}
+                          <img style="height: 120px; width: 120px;"  src="{{book.image.url}}" alt="" class="img-circle img-fluid">
+                          {% else%}
+                          <img style="height: 120px; width: 120px;"  src="{%static 'dist/img/default_image_book.jpg'%}" alt="" class="img-circle img-fluid">
+                          {% endif%}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-footer">
+                      <div class="text-right">
+
+                        {% if user.user.is_authenticated  %}
+                        <a href="{%url 'delete' book.id%}" class="btn btn-sm bg-danger">
+                          <i class="fas fa-trash"></i>
+                        </a> 
+                        {% endif %}
+
+                        {% if user.user.is_authenticated  %}
+                        <a href="{%url 'update' book.id %}" class="btn btn-sm btn-primary">
+                          <i class="fas fa-book"></i> تعديل
+                        </a>
+                        {% endif %}
+
+                        {% if user.is_authenticated  %}
+                          {% if book.likes.all %}
+                            <span>
+                              <a  href="{% url 'like_or_dislike' book.id %}" class="like-button" >
+                                <i style="color: red;" class="fa-solid fa-heart"></i>
+                              </a>
+                            </span>
+                          {%else%}
+                            <span>
+                                <a href="{% url 'like_or_dislike' book.id %}" class="like-button">
+                                  <i style="color:gray; " class="fa-regular fa-heart"></i>
+                                </a>
+                            </span>
+                          {%endif%}
+                          <i style="color: red; " class="fa-solid fa-heart"></i>
+                          <span>{{book.number_of_likes}}</span>
+                      {% endif %} 
+                      </div>
+                    </div>
+                    </div>
+                    
+                  </div>
+                  <!-- نهاية الكتاب -->
+              {%endfor%}
+                </div>
+              </div>
+              <!-- /.card-body -->
+              
+              <!-- /.card-footer -->
+            </div>
+            {% endif %}
+            <!-- /.card -->
+          </section>
+          <!-- /.content -->
+        </div>
+      <!-- /.content-wrapper -->
+    
+  </div>
+  <!-- /.content-wrapper -->
+</div>
+
+{%endblock content%}
